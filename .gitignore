@@ -7,3 +7,6 @@ cloudflare-worker/.wrangler/
 node_modules/
 logs/
 .DS_Store
+
+# Vídeos montados: van a Drive/CapCut, no al repo
+Export/
