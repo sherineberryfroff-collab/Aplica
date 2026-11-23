@@ -1,0 +1,9 @@
+# Secretos: NUNCA al repositorio (capítulo 10)
+config.env
+secretos/
+*.token
+.dev.vars
+cloudflare-worker/.wrangler/
+node_modules/
+logs/
+.DS_Store

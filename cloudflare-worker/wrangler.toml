@@ -1,0 +1,19 @@
+name = "sherine-autopost"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# Cada 5 minutos (capítulo 09, paso 4)
+[triggers]
+crons = ["*/5 * * * *"]
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "sherine-reels"
+
+[vars]
+# Versión de la Graph API de Meta: compruébala en developers.facebook.com/docs/graph-api/changelog
+GRAPH_VERSION = "v24.0"
+# URL pública de este Worker (aparece tras el primer "wrangler deploy")
+PUBLIC_URL = "https://sherine-autopost.TU-SUBDOMINIO.workers.dev"
+
+# Secretos (NO aquí): wrangler secret put META_TOKEN / IG_USER_ID / LINK_SECRET / NTFY_TOPIC

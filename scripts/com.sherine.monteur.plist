@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Tarea programada del agente (capítulo 07, paso 3): revisa la carpeta Rush cada hora.
+  Instalación: ver README, sección "Paso 4". Sustituye RUTA_DEL_REPO por la ruta real.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.sherine.monteur</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>RUTA_DEL_REPO/scripts/vigilar-rushes.sh</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>RUTA_DEL_REPO/logs/launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>RUTA_DEL_REPO/logs/launchd.log</string>
+</dict>
+</plist>
