@@ -1,5 +1,10 @@
 # Aplica — Tu monteur IA (guía de Pape San aplicada a Sherine)
 
+> **Actualización (23/11/2026): Sherine trabaja con iPad, no con Mac.** El editor vive en la nube:
+> rushes en Google Drive → Claude monta con ffmpeg y tu identidad «Bali en crudo» (`marca/`) → `Export/` en Drive →
+> música y publicación desde CapCut/Instagram. Las secciones de Edits Desktop y launchd de abajo quedan
+> solo como referencia por si algún día tienes un Mac.
+
 Tú grabas, dejas los rushes en una carpeta y te vas. Tu agente (Claude Code) monta el vídeo en
 **Edits Desktop** con TU estilo, lo exporta, lo apunta en tu Google Sheet y te manda
 « Montage prêt » al móvil. Tú miras, corriges si hace falta y publicas.
