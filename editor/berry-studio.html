@@ -79,6 +79,26 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-vis
 .note{font-size:13px;color:var(--muted)}
 .pending{border-left:3px solid var(--warn);padding:10px 14px;background:var(--field);font-size:14px}
 .loading{padding:48px 0;color:var(--muted)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:4px}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:10px 16px;cursor:pointer;font-family:var(--display);font-stretch:125%;font-weight:850;text-transform:uppercase;font-size:14px;color:var(--muted)}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.feed{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding-bottom:22px;position:relative}
+.step::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);display:grid;place-items:center;font-size:12px;font-weight:600;background:var(--panel);font-variant-numeric:tabular-nums}
+.step.done .dot{background:var(--accent);color:var(--accent-fg)}
+.step.live .dot{border-color:var(--warn);color:var(--warn)}
+@media (prefers-reduced-motion:no-preference){.step.live .dot{animation:pulse 1.4s ease-in-out infinite}}
+@keyframes pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--warn) 25%,transparent)}}
+.sbody{min-width:0;display:grid;gap:6px}
+.sfase{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.stitle{font-weight:600;font-size:16px}
+.sdet{font-size:14px;color:var(--fg);white-space:pre-line}
+.simg{overflow-x:auto;border:1px solid var(--line);background:var(--carbon)}
+.simg img{display:block;max-width:none;height:150px}
+.simg.tall img{height:auto;max-width:100%}
+.shora{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:no-preference){.ib,.btn{transition:border-color .15s,background .15s}}
 </style>
 
@@ -98,6 +118,23 @@ const $ = (s, el=document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => (Math.round(n*10)/10).toFixed(1);
 let db = null, episodes = [], current = null, draft = null, dirty = false, saving = false, unsub = null;
+let tab = "proceso", pasos = [];
+
+function renderProceso(){
+  const mine = pasos.filter(p => p.ep === current).sort((a,b) => (a.orden||0) - (b.orden||0));
+  if(!mine.length) return `<div class="card"><p class="note">Aquí verás cada paso del montaje mientras Claude trabaja: qué clips descarga, qué fotogramas mira, qué repetición elige y por qué.</p></div>`;
+  return `<div class="card"><ol class="feed">${mine.map((p,i) => `
+    <li class="step ${p.estado==="en curso"?"live":"done"}">
+      <span class="dot">${p.estado==="en curso"?"…":i+1}</span>
+      <div class="sbody">
+        <span class="sfase">${esc(p.fase||"")}${p.version?` · versión ${esc(p.version)}`:""}</span>
+        <span class="stitle">${esc(p.titulo)}</span>
+        ${p.detalle?`<span class="sdet">${esc(p.detalle)}</span>`:""}
+        ${p.img?`<div class="simg ${p.alto?"tall":""}"><img src="${esc(p.img)}" alt="${esc(p.titulo)}" loading="lazy"></div>`:""}
+        ${p.hora?`<span class="shora">${esc(new Date(p.hora).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}))}</span>`:""}
+      </div>
+    </li>`).join("")}</ol></div>`;
+}
 
 const app = $("#app"), sel = $("#ep");
 
@@ -123,6 +160,11 @@ function render(){
     </aside>
 
     <section class="stack">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="${tab==="proceso"}" data-act="tab" data-tab="proceso">Proceso de edición</button>
+        <button class="tab" role="tab" aria-selected="${tab==="ajustes"}" data-act="tab" data-tab="ajustes">Planos y ajustes</button>
+      </div>
+      ${tab==="proceso" ? renderProceso() : `
       <div class="card">
         <h2>Título</h2>
         <div class="fields">
@@ -183,7 +225,7 @@ function render(){
           <span class="msg" id="msg" role="status">${dirty?"Cambios sin guardar":""}</span>
         </div>
         <p class="note">Después dile a Claude en el chat «ya está» y montará la versión ${(d.version||1)+1} con tus cambios.</p>
-      </div>
+      </div>`}
     </section>
   </div>`;
 }
@@ -206,6 +248,7 @@ app.addEventListener("input", e => {
 app.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if(!b || !draft) return;
   const i = +b.dataset.i, P = draft.planos, act = b.dataset.act;
+  if(act==="tab"){ tab = b.dataset.tab; render(); return; }
   if(act==="up" && i>0){ [P[i-1],P[i]]=[P[i],P[i-1]]; dirty=true; render(); }
   else if(act==="down" && i<P.length-1){ [P[i+1],P[i]]=[P[i],P[i+1]]; dirty=true; render(); }
   else if(act==="toggle"){ P[i].activo = P[i].activo===false; dirty=true; render(); }
@@ -243,6 +286,10 @@ function pick(id){
   const timer = setTimeout(() => { if(!episodes.length) app.innerHTML = `<p class="loading">No se han podido cargar los montajes. Abre la página de nuevo en un momento.</p>`; }, 10000);
   db = await (window.claude?.use ? window.claude.use("db") : null);
   if(!db){ clearTimeout(timer); app.innerHTML = `<p class="loading">Inicia sesión en claude.ai para ver y editar tus montajes.</p>`; return; }
+  db.collection("proceso").onSnapshot(snap => {
+    pasos = snap.docs.map(d => d.data());
+    if(draft && tab === "proceso") render();
+  }, () => {});
   db.collection("episodios").onSnapshot(snap => {
     clearTimeout(timer);
     episodes = snap.docs.map(d=>({id:d.id, data:d.data()})).sort((a,b)=>String(b.id).localeCompare(String(a.id)));

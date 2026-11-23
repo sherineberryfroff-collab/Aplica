@@ -176,3 +176,14 @@ Antes de esa línea: el caption propuesto y cualquier duda o aviso.
 > si una contradice a otra, gana la más reciente y márcala.
 
 - 2026-11-23 — Ficha creada a partir del análisis de sus datos Metricool.
+
+## 9. Berry Studio — montar a la vista de Sherine (obligatorio)
+
+Editor: https://claude.ai/artifact/RxPmtpRAuXRhUVKAzcVWJg (base de datos: colecciones `episodios` y `proceso`).
+Sherine quiere **ver todo el proceso de edición en directo**. En cada montaje:
+1. Abre el editor (`Artifact action: open`) y pon el episodio en `estado: "renderizando"`.
+2. **Antes de cada paso**, escribe un doc en `proceso` (`ep`, `version`, `orden`, `fase`, `titulo`, `detalle`, `img`, `estado: "en curso"`)
+   y márcalo `"hecho"` al terminar. Fases: Descargar → Analizar (hoja de fotogramas de cada clip) → Elegir el momento
+   (tira con los segundos elegidos en amarillo `#E8C547` + por qué) → Montar (orden, color, títulos, sonido) → Exportar.
+3. Sube las imágenes como assets del artefacto y el vídeo final en versión ligera (720×1280, <15 MB); actualiza `planos`, `video_url`, `version`, `estado: "listo"`.
+4. Si Sherine ha guardado cambios (`estado: "cambios_pedidos"`), léelos (planos, notas, calidez, audio) antes de montar y respétalos.
