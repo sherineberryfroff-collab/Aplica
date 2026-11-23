@@ -54,8 +54,8 @@ verdes apagados, ligero grano. Aproximación ffmpeg de partida:
 
 **Series** (cada tipo de vídeo = una serie con su receta; la carpeta del rush dice cuál):
 `berryvlog` (día a día / viajes) · `retoberry` (reto 90 días; en FR **défiberry**) · `berrybrunch` (sitios donde come) ·
-`berry101` (tips para vivir en Bali) · `new era` (reflexiones, opinión) · `a bad day in bali` (los días malos con humor).
-Las carpetas en Drive: `Rush/berryvlog/`, `Rush/defiberry/`, `Rush/berrybrunch/`, `Rush/berry101/`, `Rush/newera/`, `Rush/badday/`, `Rush/opinion/`, `Rush/colab/`.
+`berry101` (tips para vivir en Bali) · `new era` (reflexiones, opinión) · `a bad day in bali` (los días malos con humor) · `berrysport` (sesiones de gym, ej. « séance quadriceps »).
+Las carpetas en Drive: `Rush/berryvlog/`, `Rush/defiberry/`, `Rush/berrybrunch/`, `Rush/berry101/`, `Rush/newera/`, `Rush/badday/`, `Rush/opinion/`, `Rush/colab/`, `Rush/berrysport/`.
 
 **Voz en off**: Sherine graba la voz aparte (notas de voz del móvil) y la deja en la misma carpeta (`voz*.m4a`).
 La voz manda: se monta la imagen sobre la voz, se recortan silencios largos de la voz (>0,6 s) y se subtitula en francés.
@@ -118,6 +118,15 @@ Esto es lo que ya funciona. Es la base de las recetas.
 4. Voz en off → subtítulos Inter sin fondo. Sin voz → textos cortos tipo diario en Inter (« 8h – petit déj sur l'océan »).
 5. **Duración objetivo: 45–70 s.**
 6. Menciones de colaboradores (@frenchiesinmaldives, etc.) van en el caption, no en pantalla salvo que ella lo pida.
+
+### Receta S — berrysport (sesión de gym, limpio)
+1. **Gancho 0–2 s**: la serie más intensa o estética de la sesión (última repetición, buena luz), con « berrysport » + subtítulo de episodio (« séance quadriceps »).
+2. **Un bloque por ejercicio**, en el orden real de la sesión: 2–4 s de cada serie, cortes secos al ritmo; nunca repeticiones enteras aburridas.
+3. Al empezar cada ejercicio, texto de diario en Inter abajo-izquierda: nombre + series×reps (« squat bulgare — 4×10 »). Sin emojis, sin flechas, sin contadores animados.
+4. Voz en off → subtítulos Inter. Sin voz → solo los textos de ejercicio.
+5. Color: preset cálido pero respetando la luz del gym; nada de saturar.
+6. Final: plano de cierre tranquilo (estiramiento, salida, agua) 1–2 s. **Duración objetivo: 30–50 s.**
+7. Menciones (gimnasio, coach) van en el caption, no en pantalla.
 
 ### Receta C — Colaboración con marca
 1. Igual que A (gancho con opinión/problema personal: « J'ai perdu 5 000 € avec ma première voiture »).
