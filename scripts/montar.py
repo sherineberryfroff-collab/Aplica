@@ -19,9 +19,12 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 F = os.path.join(REPO, "marca", "fuentes")
 BLANCO_ROTO = "0xF4F1EC"
 # Aproximación del preset "Berry Cálido": cálido, azules/turquesas apagados, grano suave
-GRADE = ("eq=contrast=1.06:saturation=0.92:gamma=1.01,"
-         "colorbalance=rs=0.03:gs=0.0:bs=-0.04:rm=0.02:bm=-0.03:rh=0.01:bh=-0.02,"
-         "noise=alls=6:allf=t")
+def grade(calidez=2):
+    """calidez 0 neutro · 1 suave · 2 Berry Cálido · 3 muy cálido (se edita en Berry Studio)."""
+    k = [0.0, 0.5, 1.0, 1.6][int(calidez)]
+    return (f"eq=contrast={1 + 0.06 * k:.3f}:saturation={1 - 0.08 * k:.3f},"
+            f"colorbalance=rs={0.03 * k:.3f}:bs={-0.04 * k:.3f}:rm={0.02 * k:.3f}:bm={-0.03 * k:.3f}"
+            f":rh={0.01 * k:.3f}:bh={-0.02 * k:.3f},noise=alls=6:allf=t")
 
 
 def esc(t):
@@ -45,11 +48,11 @@ def main(lista, rush_dir, salida):
     ed = json.load(open(lista))
     tmp = tempfile.mkdtemp()
     piezas, t, textos = [], 0.0, []
-    for i, p in enumerate(ed["planos"]):
+    for i, p in enumerate(x for x in ed["planos"] if x.get("activo", True)):
         dur = p["hasta"] - p["desde"]
         out = os.path.join(tmp, f"p{i:02d}.mp4")
         vf = (f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,"
-              f"fps=30,{GRADE},format=yuv420p")
+              f"fps=30,{grade(ed.get('calidez', 2))},format=yuv420p")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(p["desde"]), "-t", str(dur),
                         "-i", os.path.join(rush_dir, p["clip"]), "-vf", vf,
                         "-af", f"volume={ed.get('audio_ambiente', 0.25)},aresample=48000",
